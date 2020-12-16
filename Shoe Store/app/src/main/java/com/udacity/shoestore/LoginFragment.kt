@@ -20,7 +20,12 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
-        binding.button.setOnClickListener {
+        binding.loginButton.setOnClickListener {
+            view?.findNavController()
+                ?.navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeFragment())
+        }
+
+        binding.signupButton.setOnClickListener {
             view?.findNavController()
                 ?.navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeFragment())
         }

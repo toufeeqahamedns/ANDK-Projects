@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">ShoeStore</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="next">NEXT</string>
+    <string name="instruction_one">Shoe store consists of all the shoes listed. You can find each shoe with its name, company, size and description.</string>
+    <string name="instruction_two">A button on Shoe List screen takes to Shoe Details Screen. One can add more shoes into the list. In the Shoe Details screen fill all the details of a particulat shoe. Once added the show will be shown in the list on the list screen.</string>
+    <string name="logo_desc">Shoe Store App Logo</string>
+    <string name="how_to">How to use?</string>
+    <string name="welcome_string">Welcome to Shoe Store App</string>
+    <string name="welcome_desc">We\'re pleased to see you around here.\nContinuing you are agreeing to the terms of use and privacy policy</string>
+    <string name="fab_desc">Takes to shoe details screen to add new shoe</string>
+    <string name="add_shoe_details">Add Shoe Details</string>
+    <string name="name">Name</string>
+    <string name="size">Size</string>
+    <string name="description">Description</string>
+    <string name="company">Company</string>
+    <string name="name_formatted">Name: %s</string>
+    <string name="size_formatted">Size: %s</string>
+    <string name="description_formatted">Desc: %s</string>
+    <string name="company_formatted">Comp: %s</string>
 </resources>
