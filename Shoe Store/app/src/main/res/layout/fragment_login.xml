@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+<!--    Constraint Layout is used so as to layout the views -->
+<!--    which wont be affected by the configuration changes-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".LoginFragment">
-
 
         <Button
             android:id="@+id/signup_button"

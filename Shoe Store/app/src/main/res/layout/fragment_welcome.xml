@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--    Constraints are laid out to the bottom part of the -->
+    <!--    screen and top part of the views separately.-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="@color/design_default_color_primary"
         tools:context=".WelcomeFragment">
-
 
         <Button
             android:id="@+id/next_button"

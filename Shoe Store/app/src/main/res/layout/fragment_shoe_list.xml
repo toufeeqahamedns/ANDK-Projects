@@ -8,6 +8,9 @@
         android:layout_height="match_parent"
         tools:context=".ShoeListFragment">
 
+        <!-- ScrollView enables the views inside it to be scrolled.-->
+        <!-- As we have list of shoes to be scrolled we are using ScrollView-->
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,11 +34,11 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:contentDescription="@string/fab_desc"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add"
-            android:contentDescription="@string/fab_desc"
-            android:focusable="true" />
+            app:srcCompat="@drawable/ic_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

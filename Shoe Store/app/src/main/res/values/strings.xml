@@ -21,4 +21,5 @@
     <string name="size_formatted">Size: %s</string>
     <string name="description_formatted">Desc: %s</string>
     <string name="company_formatted">Comp: %s</string>
+    <string name="cancel">Cancel</string>
 </resources>

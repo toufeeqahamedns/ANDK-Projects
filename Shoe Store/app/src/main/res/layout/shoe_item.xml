@@ -9,6 +9,11 @@
             type="com.udacity.shoestore.models.Shoe" />
     </data>
 
+    <!--    Linear Layout is used-->
+
+    <!--    This is a simple view group which is just laid-out in-->
+    <!--    a much simpler way. Only 4 fields are present one below the other-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

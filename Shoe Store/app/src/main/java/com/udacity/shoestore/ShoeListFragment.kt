@@ -37,6 +37,8 @@ class ShoeListFragment : Fragment() {
         val layoutInflater = layoutInflater
         var shoeBinding: ShoeItemBinding
 
+        // Observing shoe list and dynamically inflating the layouts
+        // DataBinding is used.
         viewModel.shoes.observe(viewLifecycleOwner, { shoes ->
             for (shoe in shoes) {
                 shoeBinding =

@@ -3,11 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.udacity.shoestore.models.MainActivityViewModel" />
+    </data>
+
+<!--    Constraint layout is used to so that the views are-->
+<!--    laid out in the same fashion even on orientation changes. -->
+<!--    -->
+<!--    Chains are used to spread out the buttons at the bottom -->
+<!--    so as that they stay together.-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ShoeDetailFragment">
-
 
         <TextView
             android:id="@+id/textView"
@@ -45,6 +56,7 @@
             android:autofillHints=""
             android:ems="10"
             android:inputType="textPersonName"
+            android:text="@={viewModel.shoeName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +83,7 @@
             android:layout_marginEnd="16dp"
             android:autofillHints=""
             android:ems="10"
+            android:text="@={viewModel.shoeSize}"
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +109,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
+            android:text="@={viewModel.shoeCompany}"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +135,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
+            android:text="@={viewModel.shoeDesc}"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +148,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/design_default_color_error"
-            android:text="Cancel"
+            android:text="@string/cancel"
+            android:onClick="@{() -> viewModel.navigate()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/save_button"
             app:layout_constraintEnd_toStartOf="@+id/save_button"
             app:layout_constraintHorizontal_bias="0.5"
@@ -148,6 +164,7 @@
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="Save"
+            android:onClick="@{() -> viewModel.saveShoe()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

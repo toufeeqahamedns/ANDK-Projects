@@ -5,9 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Shoe(
-    val name: String = "Shoe",
+    val name: String = "",
     val size: Double? = 0.0,
-    val company: String = "Company",
-    val description: String = "Shoe Description",
+    val company: String = "",
+    val description: String = "",
     val image: String = ""
 ) : Parcelable
