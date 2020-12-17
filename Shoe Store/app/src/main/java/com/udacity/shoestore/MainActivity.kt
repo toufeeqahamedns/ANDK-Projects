@@ -31,8 +31,10 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id != R.id.shoeDetailFragment) {
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            when (destination.id) {
+                R.id.shoeListFragment,
+                R.id.welcomeFragment ->
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
             }
         }
     }
