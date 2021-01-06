@@ -3,10 +3,8 @@ package com.udacity.asteroidradar.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.database.AsteroidDatabase
-import com.udacity.asteroidradar.database.DatabaseAsteroid
-import com.udacity.asteroidradar.database.asDomainModel
+import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.database.*
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +15,12 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
 
     val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(asteroidDatabase.asteroidDao.getAsteroids()) {
-            it.asDomainModel()
+            it?.asAsteroidModel()
+        }
+
+    val dailyPhoto: LiveData<PictureOfDay> =
+        Transformations.map(asteroidDatabase.asteroidDao.getDailyPhoto()) {
+            it?.asPhotoModel()
         }
 
 
@@ -38,6 +41,22 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
             }.toList()
 
             asteroidDatabase.asteroidDao.insertAll(asteroids)
+        }
+    }
+
+    suspend fun refreshDailyPhoto() {
+        withContext(Dispatchers.IO) {
+            val jsonResult = Network.asteroidsService.getDailyPhoto()
+            JSONObject(jsonResult).let {
+                if (it.getString("media_type") == "image") {
+                    asteroidDatabase.asteroidDao.insertPhoto(
+                        DatabasePhoto(
+                            title = it.getString("title"),
+                            url = it.getString("url")
+                        )
+                    )
+                }
+            }
         }
     }
 }

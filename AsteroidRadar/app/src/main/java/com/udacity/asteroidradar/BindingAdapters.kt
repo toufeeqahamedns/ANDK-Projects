@@ -1,9 +1,14 @@
 package com.udacity.asteroidradar
 
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.main.AsteroidAdapter
 
 @BindingAdapter("statusIcon")
@@ -46,4 +51,22 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 fun bindDataToRecyclerView(recyclerView: RecyclerView, asteroid: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidAdapter
     adapter.submitList(asteroid)
+}
+
+@BindingAdapter("pictureOfDay")
+fun bindImage(imageView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
+
+        Picasso.get().load(imgUrl).placeholder(R.drawable.placeholder_picture_of_day).into(imageView)
+    }
+}
+
+@BindingAdapter("apiStatus")
+fun bindApiStatus(progressView: ProgressBar, apiStatus: ApiStatus?) {
+    when (apiStatus) {
+        ApiStatus.LOADING -> progressView.visibility = VISIBLE
+        ApiStatus.ERROR -> progressView.visibility = VISIBLE
+        ApiStatus.DONE -> progressView.visibility = GONE
+    }
 }

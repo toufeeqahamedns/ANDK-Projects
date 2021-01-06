@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.udacity.asteroidradar.ApiStatus
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
@@ -17,18 +18,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val asteroid: LiveData<ArrayList<Asteroid>>
         get() = _asteroids
 
+    private val _apiStatus = MutableLiveData<ApiStatus>()
+    val apiStatus: LiveData<ApiStatus>
+        get() = _apiStatus
+
     init {
+        _apiStatus.value = ApiStatus.LOADING
         refreshAsteroids()
     }
 
     val asteroidList = repository.asteroids
 
+    val pictureOfDay = repository.dailyPhoto
+
     private fun refreshAsteroids() {
         viewModelScope.launch {
             try {
+                _apiStatus.value = ApiStatus.LOADING
                 repository.refreshAsteroids()
+                repository.refreshDailyPhoto()
+                _apiStatus.value = ApiStatus.DONE
             } catch (e: Exception) {
-                print(e.message)
+                _apiStatus.value = ApiStatus.ERROR
             }
         }
     }

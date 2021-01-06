@@ -14,9 +14,15 @@ interface AsteroidDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(asteroid: List<DatabaseAsteroid>)
+
+    @Query("select * from dailyphoto limit 1 ")
+    fun getDailyPhoto(): LiveData<DatabasePhoto>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPhoto(photo: DatabasePhoto)
 }
 
-@Database(entities = [DatabaseAsteroid::class], version = 1)
+@Database(entities = [DatabaseAsteroid::class, DatabasePhoto::class], version = 2)
 abstract class AsteroidDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao
 }
