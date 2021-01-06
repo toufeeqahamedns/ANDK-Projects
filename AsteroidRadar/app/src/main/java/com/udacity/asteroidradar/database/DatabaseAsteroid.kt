@@ -36,6 +36,7 @@ fun List<DatabaseAsteroid>.asAsteroidModel(): List<Asteroid> {
 @Entity(tableName = "dailyphoto")
 data class DatabasePhoto(
     @PrimaryKey
+    val date: String,
     val url: String,
     val title: String,
 )

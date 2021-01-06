@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.ApiStatus
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.AsteroidFilter
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
@@ -14,20 +15,30 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
     private val repository = AsteroidRepository(database)
 
-    private val _asteroids = MutableLiveData<ArrayList<Asteroid>>()
-    val asteroid: LiveData<ArrayList<Asteroid>>
-        get() = _asteroids
-
     private val _apiStatus = MutableLiveData<ApiStatus>()
     val apiStatus: LiveData<ApiStatus>
         get() = _apiStatus
+
+    private val _navigateToDetail = MutableLiveData<Asteroid>()
+    val navigateToDetail: LiveData<Asteroid>
+        get() = _navigateToDetail
+
+    private val _asteroidFilter = MutableLiveData<AsteroidFilter>(AsteroidFilter.WEEKLY)
+    val asteroidFilter: LiveData<AsteroidFilter>
+        get() = _asteroidFilter
 
     init {
         _apiStatus.value = ApiStatus.LOADING
         refreshAsteroids()
     }
 
-    val asteroidList = repository.asteroids
+    val asteroid = Transformations.switchMap(_asteroidFilter) {
+        when (it!!) {
+            AsteroidFilter.WEEKLY -> repository.weeklyAsteroids
+            AsteroidFilter.ALL -> repository.allAsteroids
+            else -> repository.todaysAsteroids
+        }
+    }
 
     val pictureOfDay = repository.dailyPhoto
 
@@ -42,6 +53,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _apiStatus.value = ApiStatus.ERROR
             }
         }
+    }
+
+    fun onAsteroidClicked(asteroid: Asteroid) {
+        _navigateToDetail.value = asteroid
+    }
+
+    fun onNavigatedToDetail() {
+        _navigateToDetail.value = null
+    }
+
+    fun setAsteroidFilter(asteroidFilter: AsteroidFilter) {
+        _asteroidFilter.value = asteroidFilter
     }
 
 

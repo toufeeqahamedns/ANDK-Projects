@@ -12,11 +12,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface AsteroidService {
-    @GET("neo/rest/v1/feed?api_key=DEMO_KEY")
-    suspend fun getAsteroidList(): String
+    @GET("neo/rest/v1/feed")
+    suspend fun getAsteroidList(@Query("api_key") apiKey: String): String
 
-    @GET("planetary/apod?api_key=DEMO_KEY")
-    suspend fun getDailyPhoto(): String
+    @GET("planetary/apod")
+    suspend fun getDailyPhoto(@Query("api_key") apiKey: String): String
 }
 
 val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

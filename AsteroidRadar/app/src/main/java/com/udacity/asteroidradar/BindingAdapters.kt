@@ -58,7 +58,8 @@ fun bindImage(imageView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
 
-        Picasso.get().load(imgUrl).placeholder(R.drawable.placeholder_picture_of_day).into(imageView)
+        Picasso.get().load(imgUrl).placeholder(R.drawable.placeholder_picture_of_day)
+            .into(imageView)
     }
 }
 
@@ -66,7 +67,16 @@ fun bindImage(imageView: ImageView, imgUrl: String?) {
 fun bindApiStatus(progressView: ProgressBar, apiStatus: ApiStatus?) {
     when (apiStatus) {
         ApiStatus.LOADING -> progressView.visibility = VISIBLE
-        ApiStatus.ERROR -> progressView.visibility = VISIBLE
+        ApiStatus.ERROR -> progressView.visibility = GONE
         ApiStatus.DONE -> progressView.visibility = GONE
+    }
+}
+
+@BindingAdapter("apiStatus")
+fun bindApiStatus(recyclerView: RecyclerView, apiStatus: ApiStatus?) {
+    when (apiStatus) {
+        ApiStatus.LOADING -> recyclerView.visibility = GONE
+        ApiStatus.ERROR -> recyclerView.visibility = VISIBLE
+        ApiStatus.DONE -> recyclerView.visibility = VISIBLE
     }
 }

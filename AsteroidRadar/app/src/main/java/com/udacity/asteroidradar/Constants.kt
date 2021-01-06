@@ -12,3 +12,9 @@ enum class ApiStatus {
     DONE,
     ERROR
 }
+
+enum class AsteroidFilter {
+    ALL,
+    WEEKLY,
+    TODAY
+}
