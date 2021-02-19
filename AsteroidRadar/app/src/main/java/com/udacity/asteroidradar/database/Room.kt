@@ -29,7 +29,7 @@ interface AsteroidDao {
     fun insertPhoto(photo: DatabasePhoto)
 }
 
-@Database(entities = [DatabaseAsteroid::class, DatabasePhoto::class], version = 7)
+@Database(entities = [DatabaseAsteroid::class, DatabasePhoto::class], version = 1)
 abstract class AsteroidDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao
 }

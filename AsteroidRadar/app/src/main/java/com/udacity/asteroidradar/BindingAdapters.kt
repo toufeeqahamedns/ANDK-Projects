@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar
 
+import android.provider.Settings.Global.getString
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
@@ -13,10 +14,14 @@ import com.udacity.asteroidradar.main.AsteroidAdapter
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
+    val context = imageView.context
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription =
+            context.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription = context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -54,12 +59,14 @@ fun bindDataToRecyclerView(recyclerView: RecyclerView, asteroid: List<Asteroid>?
 }
 
 @BindingAdapter("pictureOfDay")
-fun bindImage(imageView: ImageView, imgUrl: String?) {
-    imgUrl?.let {
-        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
+fun bindImage(imageView: ImageView, pictureOfDay: PictureOfDay?) {
+    pictureOfDay?.let {
+        val imgUrl = pictureOfDay.url.toUri().buildUpon().scheme("https").build()
 
         Picasso.get().load(imgUrl).placeholder(R.drawable.placeholder_picture_of_day)
             .into(imageView)
+
+        imageView.contentDescription = pictureOfDay.title
     }
 }
 

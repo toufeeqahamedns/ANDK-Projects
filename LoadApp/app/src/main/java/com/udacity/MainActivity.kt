@@ -75,15 +75,15 @@ class MainActivity : AppCompatActivity() {
             when (radioGroup.checkedRadioButtonId) {
                 R.id.glide_radio_button -> contentIntent.putExtra(
                     FILENAME_EXTRA,
-                    R.string.glide_content_desc
+                    getString(R.string.glide_content_desc)
                 )
                 R.id.project_radio_button -> contentIntent.putExtra(
                     FILENAME_EXTRA,
-                    R.string.project_content_desc
+                    getString(R.string.project_content_desc)
                 )
                 R.id.retrofit_radio_button -> contentIntent.putExtra(
                     FILENAME_EXTRA,
-                    R.string.retrofit_content_desc
+                    getString(R.string.retrofit_content_desc)
                 )
             }
 
