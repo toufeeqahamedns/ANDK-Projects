@@ -1,13 +1,16 @@
 package com.udacity.project4.locationreminders.reminderslist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthUI
 import com.udacity.project4.R
+import com.udacity.project4.authentication.AuthenticationActivity
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentRemindersBinding
+import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import com.udacity.project4.utils.setTitle
 import com.udacity.project4.utils.setup
@@ -73,6 +76,17 @@ class ReminderListFragment : BaseFragment() {
         when (item.itemId) {
             R.id.logout -> {
                 AuthUI.getInstance().signOut(this.requireContext())
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            startActivity(
+                                Intent(
+                                    requireActivity(),
+                                    AuthenticationActivity::class.java
+                                )
+                            )
+                            requireActivity().finish()
+                        }
+                    }
             }
         }
         return super.onOptionsItemSelected(item)

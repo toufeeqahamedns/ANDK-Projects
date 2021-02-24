@@ -1,12 +1,16 @@
 package com.udacity.project4.authentication
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.Auth
+import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
@@ -17,22 +21,31 @@ import com.udacity.project4.locationreminders.RemindersActivity
  */
 class AuthenticationActivity : AppCompatActivity() {
 
-    private val authViewModel by viewModels<AuthViewModel>()
+    private val firebaseAuth = FirebaseAuth.getInstance()
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            if(firebaseAuth.currentUser != null){
+                startActivity(Intent(this, RemindersActivity::class.java))
+                finish()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(firebaseAuth.currentUser != null){
+            startActivity(Intent(this, RemindersActivity::class.java))
+            finish()
+            return
+        }
 
         val binding: ActivityAuthenticationBinding = DataBindingUtil.setContentView<ActivityAuthenticationBinding>(this, R.layout.activity_authentication)
 
         binding.button.setOnClickListener {
             initiateAuth()
         }
-
-        authViewModel.authState.observe(this, { authState ->
-            if (authState == AuthState.AUTHENTICATED) {
-                startActivity(Intent(this, RemindersActivity::class.java))
-            }
-        })
     }
 
     private fun initiateAuth() {
@@ -41,9 +54,9 @@ class AuthenticationActivity : AppCompatActivity() {
                 AuthUI.IdpConfig.GoogleBuilder().build()
         )
 
-        startActivity(
-                AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
-                        providers).build()
+        startForResult.launch(
+            Intent(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
+                providers).build())
         )
     }
 }
