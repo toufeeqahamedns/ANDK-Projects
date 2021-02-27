@@ -33,10 +33,8 @@ class RemindersLocalRepositoryTest {
 
     private lateinit var repository: RemindersLocalRepository
 
-    val reminder1 =
-        ReminderDTO("title1", "description1", "U of I", 40.1019728891, -88.2271671295)
-    val reminder2 =
-        ReminderDTO("title2", "description2", "Carle", 40.1169726776, -88.2155799866)
+    private val reminder1 = ReminderDTO("Title1", "Banglore", "Banglore", 12.9716, 77.5946)
+    private val reminder2 = ReminderDTO("Title2", "Molkalmuru", "Molkalmuru", 14.7165, 76.7466)
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
