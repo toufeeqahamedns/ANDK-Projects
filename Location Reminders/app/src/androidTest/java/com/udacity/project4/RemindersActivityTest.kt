@@ -21,7 +21,7 @@ import org.koin.test.get
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-//END TO END test to black box test the app
+// END TO END test to black box test the app
 class RemindersActivityTest :
     AutoCloseKoinTest() {// Extended Koin Test - embed autoclose @after method to close Koin after every test
 
@@ -34,7 +34,7 @@ class RemindersActivityTest :
      */
     @Before
     fun init() {
-        stopKoin()//stop the original app koin
+        stopKoin() // stop the original app koin
         appContext = getApplicationContext()
         val myModule = module {
             viewModel {
