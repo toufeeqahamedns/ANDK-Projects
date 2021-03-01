@@ -1,16 +1,45 @@
 package com.udacity.project4
 
 import android.app.Application
+import android.view.View
+import android.widget.TextView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.google.android.material.internal.ContextUtils
+import com.udacity.project4.base.DataBindingViewHolder
+import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.data.ReminderDataSource
+import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
+import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import com.udacity.project4.locationreminders.reminderslist.RemindersListViewModel
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
+import com.udacity.project4.util.DataBindingIdlingResource
+import com.udacity.project4.util.monitorActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
+import org.junit.After
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -66,6 +95,60 @@ class RemindersActivityTest :
     }
 
 
-//    TODO: add End to End testing to the app
+    // TODO: add End to End testing to the app
 
+    private val dataBindingIdlingResource = DataBindingIdlingResource()
+
+    @Before
+    fun registerIdlingResource() {
+        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
+    }
+
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
+    }
+
+    @Test
+    fun selectLoaction_addReminder() = runBlocking {
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        onView(withId(R.id.addReminderFAB)).perform(click())
+
+        onView(withId(R.id.selectLocation)).perform(click())
+        onView(withId(R.id.map)).check(matches(isDisplayed()))
+        onView(withId(R.id.map)).perform(longClick())
+        delay(1000)
+        onView(withId(R.id.saveButton)).perform(click())
+
+        onView(withId(R.id.saveReminder)).perform(click())
+        onView(withText(R.string.err_enter_title))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        delay(3000)
+        onView(withId(R.id.reminderTitle)).check(matches(withHint(R.string.reminder_title)))
+        //Fill the title
+        onView(withId(R.id.reminderTitle)).perform(typeText("Default Title"))
+
+        //edit reminder details
+        onView(withId(R.id.reminderDescription)).perform(typeText("Default Desc"))
+
+        onView(withId(R.id.saveReminder)).perform(click())
+
+        onView(withId(R.id.reminderssRecyclerView)).perform(
+            RecyclerViewActions.scrollToPosition<DataBindingViewHolder<ReminderDataItem>>(
+                0
+            )
+        )
+
+        onView(withText("Default Title")).check(matches(isDisplayed()))
+        onView(withText("Default Desc")).check(matches(isDisplayed()))
+        onView(withText(R.string.reminder_saved)).inRoot(
+            RootMatchers.withDecorView(
+                Matchers.not(Matchers.`is`(ContextUtils.getActivity(getApplicationContext())?.window?.decorView))
+            )
+        ).check(matches(isDisplayed()))
+
+        activityScenario.close()
+    }
 }
